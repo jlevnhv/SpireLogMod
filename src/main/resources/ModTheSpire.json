@@ -1,0 +1,10 @@
+{
+  "modid": "spirelog",
+  "name": "Spire Log Mod",
+  "author_list": ["jlevnhv"],
+  "description": "SpireLogMod to use the Spire Logs site to provide better decision-making in-game",
+  "version": "0.1.0",
+  "sts_version": "07-01-2019",
+  "mts_version": "3.11.0",
+  "dependencies": ["basemod"]
+}
