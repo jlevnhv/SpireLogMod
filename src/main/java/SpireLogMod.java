@@ -4,6 +4,9 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 
+import java.net.*;
+import java.io.*;
+
 import basemod.BaseMod;
 import basemod.interfaces.PostBattleSubscriber;
 import basemod.interfaces.PostDungeonInitializeSubscriber;
@@ -20,20 +23,28 @@ public class SpireLogMod implements PostExhaustSubscriber,
     public static final String VERSION = "0.1.0";
     public static final String DESCRIPTION = "Spire Log Mod provides additional card information from SpireLogs.com";
 
-    private int count, totalCount;
-
-    private void resetCounts() {
-        totalCount = count = 0;
-    }
 
     private void getSpireLogs() {
-        System.out.println("Testing URL request...");
-        URL url = new URL("https://spirelogs.com/stats/ironclad/tierlist.php");
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
+        System.out.println(getUrl("https://spirelogs.com/stats/ironclad/tierlist.php"));
+    }
 
-        int status = con.getResponseCode();
-        System.out.println("HTTP Request Status: " + status);
+    private String getUrl(String urlString)
+    {
+        try {
+            URL reqUrl = new URL(urlString);
+            HttpURLConnection con = (HttpURLConnection) reqUrl.openConnection();
+            con.setRequestMethod("GET");
+
+            int status = con.getResponseCode();
+            System.out.println("HTTP Request Status: " + status);
+        }
+        catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return "This method works.";
     }
 
     public SpireLogMod() {
@@ -46,8 +57,6 @@ public class SpireLogMod implements PostExhaustSubscriber,
 
     @Override
     public void receivePostExhaust(AbstractCard c) {
-        count++;
-        totalCount++;
     }
 
     @Override
@@ -57,11 +66,10 @@ public class SpireLogMod implements PostExhaustSubscriber,
 
     @Override
     public void receivePostDungeonInitialize() {
-        resetCounts();
     }
 
     @Override
-    public void PostInitializeSubscriber() {
+    public void receivePostInitialize() {
         getSpireLogs();
     }
 
